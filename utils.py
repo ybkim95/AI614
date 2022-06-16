@@ -118,14 +118,17 @@ def plot(ax, T, path=None):
         if type(path[0]) == tuple:
             paths = [(path[i], path[i+1]) for i in range(len(path)-1)]
             if len(path) > 1:
-                paths[-1] = ((path[-2][0], path[-2][1]), (path[-1].x, path[-1].y))
+                if type(paths[-1]) == Node:
+                    paths[-1] = ((path[-2][0], path[-2][1]), (path[-1].x, path[-1].y))
+                
             lc2 = mc.LineCollection(paths, colors='magenta', linewidths=3)
             ax.add_collection(lc2)
 
         else:
             paths = [((path[i].x, path[i].y), (path[i+1].x,path[i+1].y)) for i in range(len(path)-1)]
             if len(path) > 1:
-                paths[-1] = ((path[-2][0], path[-2][1]), (path[-1].x, path[-1].y))
+                if type(paths[-1]) == Node:
+                    paths[-1] = ((path[-2][0], path[-2][1]), (path[-1].x, path[-1].y))
             lc2 = mc.LineCollection(paths, colors='magenta', linewidths=3)
             ax.add_collection(lc2)
 
@@ -168,12 +171,12 @@ def distance(x, y):
 def isInObstacle(vec, obstacles):
     for tmp in obstacles:
         obs = tmp[:-1]
-        if type(vec) != tuple:
+        if type(vec) == Node:
             vec = (vec.x, vec.y)
         else:
-            vec = vec[0]
-            if type(vec) == Node:
-                vec = (vec.x, vec.y)
+            for i in vec:
+                if type(i) == Node:
+                    vec = (i.x, i.y)
                 
         radius = tmp[-1]
         if distance(obs, vec) < radius:

@@ -210,3 +210,43 @@ class Graph:
         self.neighbors[rand_idx].append((new_idx, cost))
         self.neighbors[new_idx].append((rand_idx, cost))
         return new_node, new_idx
+
+
+class Graph2:
+    def __init__(self, q_init):
+        self.start = q_init[0]
+        self.end = q_init[1]
+
+        self.nodes = [q_init[0]]
+        self.edges = []
+        self.success = False
+
+        self.vec2idx = {q_init[0]:0}
+        self.neighbors = {0:[]}
+        self.distances = {0:0.}
+
+        self.sx = q_init[1][0] - q_init[0][0]
+        self.sy = q_init[1][1] - q_init[0][1]
+
+    def add_node(self, pos):
+        try:
+            idx = self.vec2idx[pos]
+        except:
+            idx = len(self.nodes)
+            self.nodes.append(pos)
+            self.vec2idx[pos] = idx
+            self.neighbors[idx] = []
+        return idx
+
+    def add_edge(self, idx1, idx2, cost):
+        self.edges.append((idx1, idx2))
+        self.neighbors[idx1].append((idx2, cost))
+        self.neighbors[idx2].append((idx1, cost))
+
+    def randomPosition(self):
+        rx = random()
+        ry = random()
+
+        posx = self.start[0] - (self.sx / 2.) + rx * self.sx * 2
+        posy = self.start[1] - (self.sy / 2.) + ry * self.sy * 2
+        return posx, posy

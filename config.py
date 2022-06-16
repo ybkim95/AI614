@@ -1,7 +1,7 @@
 from random import uniform
 
 N_ITER = 300
-STEP_SIZE = 0.1
+STEP_SIZE = 0.8
 RADIUS = 1
 # OBSTACLES = [
 #     # (x,y,r)

@@ -51,7 +51,7 @@ def main():
                 for i,p in enumerate(path):
                     print(i, "({},{})".format(p.x, p.y))
                 check = True
-                fig.savefig("1-1.png")
+                fig.savefig("figures/1-1.png")
                 print("Execution Time:", execution_time)
                 print("Number of Steps:", num_steps)
                 break

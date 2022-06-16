@@ -51,7 +51,7 @@ def main():
                 print("[INFO] Solution Found")
                 plot(ax, T, path)
                 check = True
-                fig.savefig("1-2.png")
+                fig.savefig("figures/1-2.png")
                 print("Execution Time:", execution_time)
                 print("Number of Steps:", num_steps)
                 break

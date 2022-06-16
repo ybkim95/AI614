@@ -105,7 +105,7 @@ def RRT(config, stepSize):
                 print("[RRT] Execution Time:", time.time() - start)
                 print("[RRT] Number of Steps:", num_steps)
             
-            fig.savefig("1-3.png")
+            fig.savefig("figures/1-3.png")
             break
             
         num_steps += 1
