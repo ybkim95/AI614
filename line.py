@@ -3,8 +3,10 @@ from node import Node
 
 class Line:
     def __init__(self, p0, p1):
-        p0 = (p0.x, p0.y)
-        p1 = (p1.x, p1.y)
+        if type(p0) == Node:
+            p0 = (p0.x, p0.y)
+        if type(p1) == Node:
+            p1 = (p1.x, p1.y)
         self.p = np.array(p0)
         self.dirn = np.array(p1) - np.array(p0)
         self.dist = np.linalg.norm(self.dirn)

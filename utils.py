@@ -45,19 +45,6 @@ def Cost(G, a, b):
     return cost
 
 def dis(p1, p2):
-    # print(p1,p2)
-    # if type(p1[0]) != int:
-    #     if type(p1[0]) == Node:
-    #         p1 = p1[0]
-    
-    # if type(p2[0]) != int:
-    #     if type(p2[0]) == Node:
-    #         p2 = p2[0]
-    
-    # if type(p1) == tuple:
-    #     p1 = Node(*p1)
-    # if type(p2) == tuple:
-    #     p2 = Node(*p2)
     return ((p1.x-p2.x)**2 + (p1.y-p2.y)**2)**0.5
 
 def intersect(line, center, radius):
@@ -112,14 +99,15 @@ def plot(ax, T, path=None):
     else:
         ax.scatter(T.end[0], T.end[1], s=1000, facecolors='none', edgecolors='r', linestyle='--')
 
+    for i, node in enumerate(T.nodes):
+        if type(node) == Node:
+            T.nodes[i] = (node.x, node.y)
 
-    # print("T.edges:", T.edges)
-    # print("T.nodes:", T.nodes)
-    # T.nodes[0] = Node(*T.nodes[0])
-    # if type(T.nodes[0]) == Node: 
-        # lines = [((T.nodes[edge[0]].x,T.nodes[edge[0]].y), (T.nodes[edge[1]].x,T.nodes[edge[1]].y)) for edge in T.edges]
-    # type(T.nodes[0]) == tuple:
-    lines = [((T.nodes[edge[0]][0],T.nodes[edge[0]][1]), (T.nodes[edge[1]][0],T.nodes[edge[1]][1])) for edge in T.edges]
+
+    try:
+        lines = [((T.nodes[edge[0]][0],T.nodes[edge[0]][1]), (T.nodes[edge[1]][0],T.nodes[edge[1]][1])) for edge in T.edges]
+    except:
+        lines = [((T.nodes[edge[0]].x,T.nodes[edge[0]].y), (T.nodes[edge[1]].x,T.nodes[edge[1]].y)) for edge in T.edges]
     
     lc = mc.LineCollection(lines, colors='blue', linewidths=2)
     ax.add_collection(lc)
@@ -129,11 +117,15 @@ def plot(ax, T, path=None):
     if path is not None:
         if type(path[0]) == tuple:
             paths = [(path[i], path[i+1]) for i in range(len(path)-1)]
+            if len(path) > 1:
+                paths[-1] = ((path[-2][0], path[-2][1]), (path[-1].x, path[-1].y))
             lc2 = mc.LineCollection(paths, colors='magenta', linewidths=3)
             ax.add_collection(lc2)
 
         else:
             paths = [((path[i].x, path[i].y), (path[i+1].x,path[i+1].y)) for i in range(len(path)-1)]
+            if len(path) > 1:
+                paths[-1] = ((path[-2][0], path[-2][1]), (path[-1].x, path[-1].y))
             lc2 = mc.LineCollection(paths, colors='magenta', linewidths=3)
             ax.add_collection(lc2)
 
@@ -158,7 +150,6 @@ def Intersection(line, center, radius):
     return True
 
 def distance(x, y):
-    # print("x:", x, "y:", y)
     if type(x) == Node:
         x = (x.x, x.y)
     else:
@@ -171,7 +162,6 @@ def distance(x, y):
         for i in y:
             if type(i) == Node:
                 y = (i.x, i.y)
-    # print("x:", x, "y:", y)
         
     return np.linalg.norm(np.array(x) - np.array(y))
 
