@@ -5,6 +5,14 @@ Truly understanding sampling-based motion planning
 
 <p align="center"><img src="figures/1-2.png" width="400" height="400"/>
 
+
+## How-to-run
+
+Please run ```python3 ${NUM_PART}.py``` and plase find the corresponding ```${NUM_PART}``` below:
+ 
+<br>
+ 
+ 
 ## Part 0. Environment creation
 
 <br>
