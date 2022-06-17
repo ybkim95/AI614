@@ -1,11 +1,6 @@
 import numpy as np
-
 import matplotlib.pyplot as plt
-from matplotlib import collections  as mc
-
-from collections import deque
 import time
-from random import random
 import math
 
 from config import *
@@ -96,7 +91,7 @@ def newnode(randvec, nearvec, stepSize):
     return newvec
 
 
-def RRT_star(config, stepSize):
+def RRT_star(config):
     q_init = config[:-1]
     obstacles = config[-1]
     start = time.time()
@@ -108,16 +103,13 @@ def RRT_star(config, stepSize):
     ax.yaxis.set_visible(False) 
 
     G = Graph(q_init)
-
     num_steps = 0
-
     for _ in range(N_ITER):
         x_rand= G.randomPosition()
         if isInObstacle(x_rand, obstacles):
             continue
 
         X_near = Near(G.nodes, x_rand) # FIXME
-
         # ChooseParent
         x_min, sigma_min = ChooseParent(G, X_near, x_rand)
 
@@ -145,5 +137,4 @@ def RRT_star(config, stepSize):
         num_steps +=1
         plot(ax, G, dijkstra(G))
     
-stepSize = 0.7
-G = RRT_star(CONFIG, stepSize)
+G = RRT_star(CONFIG)

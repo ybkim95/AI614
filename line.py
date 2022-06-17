@@ -30,7 +30,6 @@ class Line1():
                 if type(i) == Node:
                     p1 = (i.x, i.y)
 
-         
         self.p = np.array(p0, dtype=np.float32)
         self.dirn = np.array(p1, dtype=np.float32) - np.array(p0, dtype=np.float32)
         self.dist = np.linalg.norm(self.dirn)

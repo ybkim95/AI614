@@ -1,4 +1,3 @@
-import numpy as np
 import matplotlib.pyplot as plt
 import time
 
@@ -8,40 +7,6 @@ from utils import *
 from line import Line
 from tree import Graph2
 
-
-def isThruObstacle(line, obstacles):
-    for tmp in obstacles:
-        obs = tmp[:-1]
-        radius = tmp[-1]
-        if Intersection(line, obs, radius):
-            return True
-    return False
-
-def nearest(G, vex, obstacles):
-    Nvex = None
-    Nidx = None
-    minDist = float("inf")
-
-    for idx, v in enumerate(G.nodes):
-        line = Line(v, vex)
-        if isThruObstacle(line, obstacles):
-            continue
-
-        dist = distance(v, vex)
-        if dist < minDist:
-            minDist = dist
-            Nidx = idx
-            Nvex = v
-
-    return Nvex, Nidx
-
-def newVertex(randvex, nearvex):
-    dirn = np.array(randvex) - np.array(nearvex)
-    length = np.linalg.norm(dirn)
-    dirn = (dirn / length) * min (STEP_SIZE, length)
-
-    newvex = (nearvex[0]+dirn[0], nearvex[1]+dirn[1])
-    return newvex
 
 def RRT_star(startpos, endpos, obstacles):
     plt.ion() 
@@ -59,11 +24,11 @@ def RRT_star(startpos, endpos, obstacles):
         if isInObstacle(randvex, obstacles):
             continue
 
-        nearvex, nearidx = nearest(G, randvex, obstacles)
+        nearvex, nearidx = near(G, randvex, obstacles)
         if nearvex is None:
             continue
 
-        q_new = newVertex(randvex, nearvex)
+        q_new = new_node(randvex, nearvex)
 
         newidx = G.add_node(q_new)
         dist = distance(q_new, nearvex)
@@ -117,13 +82,5 @@ def RRT_star(startpos, endpos, obstacles):
         plot(ax, G, dijkstra(G))
     
     print("[RRT*] Portion of REWIRE:", sum(rewire_time)/(time.time()-start)*100)
-
-
-def pathSearch(startpos, endpos, obstacles, n_iter, radius, stepSize):
-    G = RRT_star(startpos, endpos, obstacles, n_iter, radius, stepSize)
-    if G.success:
-        path = dijkstra(G)
-        plot(G, obstacles, radius, path)
-        return path
 
 G = RRT_star(START, END, RRT_OBSTACLES)

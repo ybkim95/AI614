@@ -1,5 +1,4 @@
 import time
-import numpy as np
 import matplotlib.pyplot as plt
 
 from utils import *
@@ -65,6 +64,5 @@ def main():
     if check:
         plot(ax, T, path)
         time.sleep(2)
-
 
 main()

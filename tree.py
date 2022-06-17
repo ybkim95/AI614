@@ -1,5 +1,4 @@
 
-from secrets import randbelow
 from node import Node
 from line import Line
 
@@ -94,7 +93,6 @@ class Tree:
 
     def add_node(self, pos):
         try:
-            # print("pos:", pos)s
             idx = self.vec2idx[pos]
         except:
             idx = len(self.nodes)

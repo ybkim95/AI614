@@ -1,5 +1,4 @@
 import time
-import numpy as np
 import matplotlib.pyplot as plt
 
 from utils import *
@@ -60,13 +59,11 @@ def main():
                 continue
         
         num_steps += 1
-    
         plot(ax, T, [])
     
     if check:
         plot(ax, T, path)
         time.sleep(10)
     print("Number of Steps:", num_steps)
-
 
 main()

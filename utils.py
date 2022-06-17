@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 
 from node import Node
 from config import *
+from line import Line
 
 obstacles = CONFIG[-1]
 
@@ -12,19 +13,8 @@ def dist_btw_points(a, b):
     return distance
 
 def Cost(G, a, b):
-    # print("b:", b)
-    # if type(a[0]) != int:
-    #     a = (a[0].x,a[0].y)
-    #     a = G.vec2idx[a]
-    # else:
     a_idx = G.vec2idx[a] 
     
-
-    # if type(b[0]) != int:
-    #     b = (b[0].x, b[0].y)
-    #     # print(b)
-    #     b = G.vec2idx[b]
-    # else:
     try:
         b_idx = G.vec2idx[b]
     except:
@@ -36,7 +26,6 @@ def Cost(G, a, b):
     G.edges.append((a_idx, b_idx))
 
     cost = 0
-    # print("a_idx:", a_idx, "b_idx:", b_idx)
     while not b_idx == a_idx:
         p = G.edges[a_idx]
         p = (p[1][0].x, p[1][0].y)
@@ -190,3 +179,46 @@ def isThruObstacle(line, obstacles):
         if Intersection(line, obs, radius):
             return True
     return False
+
+def dis1(x, y):
+    if type(x) == Node:
+        x = (x.x, x.y)
+    if type(y) == Node:
+        y = (y.x, y.y)
+    return np.linalg.norm(np.array(x) - np.array(y))
+
+def obs_checker(vex, obstacles):
+    for tmp in obstacles:
+        obs = tmp[:-1]
+        radius = tmp[-1]
+        if dis1(obs, vex) < radius:
+            return True
+    return False
+
+def near(T, node, obstacles):
+    Nvex = None
+    Nidx = None
+    minDist = float("inf")
+
+    for idx, v in enumerate(T.nodes):
+        line = Line(v, node)
+        if isThruObstacle(line, obstacles):
+            continue
+
+        dist = dis1(v, node)
+        if dist < minDist:
+            minDist = dist
+            Nidx = idx
+            Nvex = v
+
+    return Nvex, Nidx
+
+def new_node(rand_node, near_node):
+    if type(near_node) == Node:
+        near_node = (near_node.x, near_node.y)
+    dir = np.array(rand_node) - np.array(near_node)
+    length = np.linalg.norm(dir)
+    dir = (dir / length) * min (STEP_SIZE, length)
+
+    new_node = (near_node[0]+dir[0], near_node[1]+dir[1])
+    return new_node
